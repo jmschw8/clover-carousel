@@ -1,4 +1,4 @@
-# BattedBall Demo App
+# Carousel Demo App
 
 This is a demo application built with React, TS, Vite, react-swipeable-views and TailwindCSS
 
