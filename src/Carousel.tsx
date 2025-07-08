@@ -15,28 +15,35 @@ type CarouselProps = {
 	dotSize?: number;
 };
 
+type DotsProps = {
+	activeIndex: number;
+	dotSize: number;
+	setIndex: React.Dispatch<React.SetStateAction<number>>;
+	slides: Slide[];
+};
+
+const Dots = ({ slides, activeIndex, setIndex, dotSize }: DotsProps) => (
+	<div className="flex gap-3 justify-center items-center">
+		{slides.map((_, i) => (
+			<button
+				key={i}
+				aria-label={`Slide ${i + 1}`}
+				onClick={() => setIndex(i)}
+				style={{ width: dotSize, height: dotSize, cursor: "pointer" }}
+				className={`rounded-full transition ${
+					i === activeIndex ? "bg-gray-900" : "bg-gray-300 hover:bg-gray-400"
+				}`}
+			/>
+		))}
+	</div>
+);
+
 export default function Carousel({ slides, dotSize = 24 }: CarouselProps) {
 	const [index, setIndex] = useState(0);
 	const [upperRatio, setUpperRatio] = useState(0.6);
 
 	const upperHeight = `${upperRatio * 100}%`;
 	const lowerHeight = `${(1 - upperRatio) * 100}%`;
-
-	const Dots = () => (
-		<div className="flex gap-3 justify-center items-center">
-			{slides.map((_, i) => (
-				<button
-					key={i}
-					aria-label={`Slide ${i + 1}`}
-					onClick={() => setIndex(i)}
-					style={{ width: dotSize, height: dotSize, cursor: "pointer" }}
-					className={`rounded-full transition ${
-						i === index ? "bg-gray-900" : "bg-gray-300 hover:bg-gray-400"
-					}`}
-				/>
-			))}
-		</div>
-	);
 
 	return (
 		<div className="flex flex-col h-full w-full overflow-hidden p-12 border-2 rounded-2xl items-center">
@@ -50,6 +57,7 @@ export default function Carousel({ slides, dotSize = 24 }: CarouselProps) {
 					max="1"
 					step=".1"
 					name="ratio"
+					defaultValue={upperRatio}
 					onChange={(e) => {
 						const val = parseFloat(e.target.value);
 						setUpperRatio(val);
@@ -66,7 +74,12 @@ export default function Carousel({ slides, dotSize = 24 }: CarouselProps) {
 					<div key={id} className="flex flex-col h-full ">
 						<CarouselUppper height={upperHeight} src={src} title={title} />
 						<div className="m-8 flex items-center justify-center">
-							<Dots />
+							<Dots
+								slides={slides}
+								activeIndex={index}
+								setIndex={setIndex}
+								dotSize={dotSize}
+							/>
 						</div>
 						<CarouselLower height={lowerHeight} title={title} text={text} />
 					</div>
