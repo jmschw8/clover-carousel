@@ -28,7 +28,7 @@ export default function App() {
 			<div className="flex flex-col justify-center items-center mb-2">
 				<h2 className="text-2xl font-bold">Carousel Demo App</h2>
 			</div>
-			<Carousel slides={slides} upperRatio={0.6} />
+			<Carousel slides={slides} />
 		</main>
 	);
 }

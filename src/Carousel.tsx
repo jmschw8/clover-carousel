@@ -12,16 +12,12 @@ type Slide = {
 
 type CarouselProps = {
 	slides: Slide[];
-	upperRatio?: number; // 0 – 1
-	dotSize?: number; // px
+	dotSize?: number;
 };
 
-export default function Carousel({
-	slides,
-	upperRatio = 0.6,
-	dotSize = 24,
-}: CarouselProps) {
+export default function Carousel({ slides, dotSize = 24 }: CarouselProps) {
 	const [index, setIndex] = useState(0);
+	const [upperRatio, setUpperRatio] = useState(0.6);
 
 	const upperHeight = `${upperRatio * 100}%`;
 	const lowerHeight = `${(1 - upperRatio) * 100}%`;
@@ -43,7 +39,23 @@ export default function Carousel({
 	);
 
 	return (
-		<div className="flex flex-col h-full w-full overflow-hidden p-12 border-2 rounded-2xl">
+		<div className="flex flex-col h-full w-full overflow-hidden p-12 border-2 rounded-2xl items-center">
+			<div className="flex flex-row gap-8 py-4 items-center">
+				<label htmlFor="ratio">{`Enter Upper Ratio (decimal between 0 - 1)`}</label>
+				<input
+					className="border-2 rounded-md p-1"
+					type="number"
+					placeholder="0-1"
+					min="0"
+					max="1"
+					step=".1"
+					name="ratio"
+					onChange={(e) => {
+						const val = parseFloat(e.target.value);
+						setUpperRatio(val);
+					}}
+				/>
+			</div>
 			<SwipeableViews
 				index={index}
 				onChangeIndex={setIndex}
